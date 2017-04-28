@@ -1,0 +1,26 @@
+{
+    "name": "alex/rss_parser",
+    "license": "MIT",
+    "type": "symfony-bundle",
+    "autoload": {
+        "psr-4": {
+            "FeedBundle\\": ""
+        }
+    },
+    "require": {
+        "php": ">=5.3.9",
+        "symfony/symfony": "2.8.*",
+        "doctrine/orm": "^2.4.8",
+        "doctrine/doctrine-bundle": "~1.4",
+        "symfony/monolog-bundle": "^3.0.2",
+        "sensio/distribution-bundle": "~5.0",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "debril/rss-atom-bundle": "^3.0",
+        "stof/doctrine-extensions-bundle": "^1.2"
+    },
+    "require-dev": {
+        "sensio/generator-bundle": "~3.0",
+        "phpunit/phpunit": "^6.1",
+        "symfony/console": "^3.0"
+    }
+}

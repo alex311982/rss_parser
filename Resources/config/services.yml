@@ -1,0 +1,5 @@
+services:
+
+    feed.handler:
+        class: FeedBundle\Handler\FeedHandler
+        arguments: ["@feedio", "@doctrine.orm.entity_manager", "%rss_feeder.limit_curl%"]
