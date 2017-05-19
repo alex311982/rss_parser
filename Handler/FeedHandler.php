@@ -6,8 +6,9 @@ use ComponentBundle\Entity\CategoryEntity;
 use ComponentBundle\Entity\MediaEntity;
 use ComponentBundle\Entity\NewsEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\EntityManagerInterface;
 use FeedBundle\Exception\FeederException;
-use Doctrine\ORM\EntityManager;
+use FeedBundle\Utils\FeedEntityManagerInterface;
 use FeedIo\Feed\Item;
 use FeedIo\Feed\ItemInterface;
 use FeedIo\FeedInterface;
@@ -21,26 +22,29 @@ class FeedHandler implements FeedHandlerInterface
      */
     protected $feedParser;
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     protected $em;
     /**
      * @var int
      */
     protected $curlLimit;
-
-    protected $persistedCategories;
+    /**
+     * @var FeedEntityManagerInterface
+     */
+    protected $feedEntityManager;
 
     public function __construct(
         FeedIo $feedParser,
-        EntityManager $em,
-        int $curlLimit
+        EntityManagerInterface $em,
+        int $curlLimit,
+        FeedEntityManagerInterface $feedEntityManager
     )
     {
         $this->feedParser = $feedParser;
         $this->em = $em;
         $this->curlLimit = $curlLimit;
-        $this->persistedCategories = new ArrayCollection();
+        $this->feedEntityManager = $feedEntityManager;
     }
 
     /**
@@ -61,13 +65,9 @@ class FeedHandler implements FeedHandlerInterface
         $this->truncateTables();
 
         foreach($feed as $item) {
-            $categoryName = !is_null($item->getCategories()->current())
-                ? $item->getCategories()->current()->getLabel() :
-                '';
-
-            $category = $this->addCategory($categoryName);
-            $media = $this->addMedia($item);
-            $news = $this->addNews($item, $category, $media);
+            $category = $this->feedEntityManager->addCategory($item);
+            $media = $this->feedEntityManager->addMedia($item);
+            $news = $this->feedEntityManager->addNews($item, $category, $media);
 
             if ($count === ++$i) {
                 break;
@@ -102,68 +102,14 @@ class FeedHandler implements FeedHandlerInterface
         }
     }
 
-    protected function addCategory(string $name): CategoryEntity
-    {
-        $key = md5($name);
-
-        $category = $this->persistedCategories->offsetExists($key)
-            ? $this->persistedCategories->get($key)
-            : null;
-
-        $category = $category ?: new CategoryEntity($name);
-        $this->persistedCategories->set($key, $category);
-        $this->em->persist($category);
-
-        return $category;
-    }
-
-    protected function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media): NewsEntity
-    {
-        $news = new NewsEntity(
-            $item->getPublicId(),
-            $category,
-            $item->getTitle(),
-            $item->getDescription(),
-            $item->getLastModified(),
-            $item->getLink(),
-            $media
-        );
-
-        $this->em->persist($news);
-
-        return $news;
-    }
-
-    /**
-     * @param Item $item
-     * @return MediaEntity | null
-     */
-    protected function addMedia(Item $item): ?MediaEntity
-    {
-        $media= null;
-
-        if ($mediaFromFeed = $item->getMedias()->current()) {
-            $media = new  MediaEntity(
-                $mediaFromFeed->getType(),
-                $mediaFromFeed->getUrl(),
-                $mediaFromFeed->getLength()
-            );
-
-            $this->em->persist($media);
-        }
-
-        return $media;
-    }
-
     /**
      * @param string $metaName
-     * @return \Doctrine\ORM\EntityRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    protected function getRepository(string $metaName):\Doctrine\ORM\EntityRepository
+    protected function getRepository(string $metaName): \Doctrine\Common\Persistence\ObjectRepository
     {
         return $this->em->getRepository($metaName);
     }
-
 
     protected function truncateTables()
     {

@@ -45,7 +45,7 @@ class ReadCommand extends ContainerAwareCommand
         $feedHandler = $this->getContainer()->get('feed.handler');
 
         try {
-            $feededFeedsCount = $feedHandler->getLastFeeds($url, $limit);
+            $feededFeedsCount = intval($feedHandler->getLastFeeds($url, $limit));
             $output->writeln("Feeded " . $feededFeedsCount . " items"); //
         } catch (FeederException $e) {
             $output->writeln("<error>{$e->getMessage()}</error>"); // Red Text
