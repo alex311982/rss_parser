@@ -8,14 +8,14 @@
 
 namespace FeedBundle\Tests\Handler;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use FeedBundle\Exception\FeederException;
 use FeedBundle\Handler\FeedHandler;
-use FeedIo\FeedInterface;
+use FeedBundle\Tests\Handler\Fake\FeedFake;
+use FeedBundle\Utils\FeedEntityManagerInterface;
+use FeedIo\Feed\ItemInterface;
 use FeedIo\FeedIo;
 use FeedIo\FeedIoException;
 use PHPUnit\Framework\TestCase;
@@ -27,26 +27,42 @@ use FeedIo\Reader\Result;
  */
 class FeedHandlerTest extends TestCase
 {
-    protected $collection;
-
     protected $limit;
 
     protected function setUp()
     {
-        $this->collection = $this->createMock(ArrayCollection::class);
         $this->limit = 10;
     }
 
-    public function testGetLastFeeds()
+    /**
+     * @dataProvider feedsProvider
+     */
+    public function testGetLastFeeds($data, $setCountInCommand, $expectedCount)
     {
-        $handler = new FeedHandler($this->getFeedParser(), $this->getEM(), $this->limit, $this->collection);
+        $feeder = $this->getFeeder();
+        $feeder->expects($this->exactly($expectedCount))
+            ->method('addCategory');
+        $feeder->expects($this->exactly($expectedCount))
+            ->method('addMedia');
+        $feeder->expects($this->exactly($expectedCount))
+            ->method('addNews');
 
-        $this->assertEquals(0, $handler->getLastFeeds('', 1));
+        $handler = new FeedHandler($this->getFeedParser($data), $this->getEM(), $this->limit, $feeder);
+
+        $this->assertEquals($expectedCount, $handler->getLastFeeds('', $setCountInCommand));
     }
 
     public function testGetLastFeedsReadException()
     {
-        $handler = new FeedHandler($this->getFeedParser(true), $this->getEM(true), $this->limit, $this->collection);
+        $feeder = $this->getFeeder();
+        $feeder->expects($this->never())
+            ->method('addCategory');
+        $feeder->expects($this->never())
+            ->method('addMedia');
+        $feeder->expects($this->never())
+            ->method('addNews');
+
+        $handler = new FeedHandler($this->getFeedParser([], true), $this->getEM(true), $this->limit, $feeder);
         $this->expectException(FeederException::class);
         $handler->getLastFeeds('', 1);
     }
@@ -76,10 +92,9 @@ class FeedHandlerTest extends TestCase
         return $em;
     }
 
-    protected function getFeedParser($isExceptionWillBeThrown = false) {
+    protected function getFeedParser($data, $isExceptionWillBeThrown = false) {
+        $feed = new FeedFake($data);
         if (!$isExceptionWillBeThrown) {
-            $feed = $this->createMock(FeedInterface::class);
-
             $result = $this->getMockBuilder(Result::class)
                 ->disableOriginalConstructor()
                 ->setMethods(['getFeed'])
@@ -106,5 +121,29 @@ class FeedHandlerTest extends TestCase
         }
 
         return $feedParser;
+    }
+
+    protected function getFeeder()
+    {
+        return $this->getMockBuilder(FeedEntityManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['addCategory', 'addNews', 'addMedia'])
+            ->getMock();
+    }
+
+    public function feedsProvider()
+    {
+        $item = $this->createMock(ItemInterface::class);
+        return [
+            [[$item, $item, $item, $item, $item, $item, $item, $item, $item, $item], 5, 5],
+            [[$item, $item, $item, $item, $item, $item, $item, $item, $item, $item], 0, 10],
+            [[$item, $item, $item, $item, $item, $item, $item, $item, $item, $item], -10, 10],
+            [[$item, $item, $item, $item, $item, $item, $item, $item, $item, $item], 20, 10],
+            [[$item, $item, $item, $item, $item, $item, $item, $item, $item, $item, $item, $item], 20, 12],
+            [[$item, $item, $item, $item, $item, $item, $item, $item, $item, $item, $item, $item], 7, 7],
+            [[$item, $item, $item], 7, 3],
+            [[], 7, 0],
+        ];
+
     }
 }

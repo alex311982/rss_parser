@@ -1,6 +1,6 @@
 <?php
 
-namespace ComponentBundle\Entity;
+namespace FeedBundle\Entity;
 
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity
  * @ORM\Table(name="category")
- * @ORM\Entity(repositoryClass="ComponentBundle\Repository\CategoryEntityRepository")
+ * @ORM\Entity(repositoryClass="FeedBundle\Repository\CategoryEntityRepository")
  * @UniqueEntity(fields="name", message="Name is already taken.", repositoryMethod="findOneBy")
  */
 class CategoryEntity

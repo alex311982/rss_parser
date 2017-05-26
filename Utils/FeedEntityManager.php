@@ -2,12 +2,11 @@
 
 namespace FeedBundle\Utils;
 
-use ComponentBundle\Entity\CategoryEntity;
-use ComponentBundle\Entity\MediaEntity;
-use ComponentBundle\Entity\NewsEntity;
+use FeedBundle\Entity\CategoryEntity;
+use FeedBundle\Entity\MediaEntity;
+use FeedBundle\Entity\NewsEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use FeedIo\Feed\Item;
 use FeedIo\Feed\ItemInterface;
 
 class FeedEntityManager implements FeedEntityManagerInterface
@@ -66,7 +65,7 @@ class FeedEntityManager implements FeedEntityManagerInterface
         return $news;
     }
 
-    public function addMedia(Item $item): ?MediaEntity
+    public function addMedia(ItemInterface $item): ?MediaEntity
     {
         $media= null;
 

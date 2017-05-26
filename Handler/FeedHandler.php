@@ -2,15 +2,9 @@
 
 namespace FeedBundle\Handler;
 
-use ComponentBundle\Entity\CategoryEntity;
-use ComponentBundle\Entity\MediaEntity;
-use ComponentBundle\Entity\NewsEntity;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use FeedBundle\Exception\FeederException;
 use FeedBundle\Utils\FeedEntityManagerInterface;
-use FeedIo\Feed\Item;
-use FeedIo\Feed\ItemInterface;
 use FeedIo\FeedInterface;
 use FeedIo\FeedIo;
 use FeedIo\FeedIoException;
@@ -64,12 +58,13 @@ class FeedHandler implements FeedHandlerInterface
 
         $this->truncateTables();
 
-        foreach($feed as $item) {
+        foreach($feed as $i => $item) {
+            $i++;
             $category = $this->feedEntityManager->addCategory($item);
             $media = $this->feedEntityManager->addMedia($item);
             $news = $this->feedEntityManager->addNews($item, $category, $media);
 
-            if ($count === ++$i) {
+            if ($count == $i) {
                 break;
             }
         }
@@ -85,7 +80,7 @@ class FeedHandler implements FeedHandlerInterface
 
     protected function getLimit($count)
     {
-        return $count > 0  ? : $count = $this->curlLimit;
+        return $count > 0  ? $count : $count = $this->curlLimit;
     }
 
     /**
@@ -113,8 +108,8 @@ class FeedHandler implements FeedHandlerInterface
 
     protected function truncateTables()
     {
-        $this->getRepository('ComponentBundle:NewsEntity')->truncate();
-        $this->getRepository('ComponentBundle:CategoryEntity')->truncate();
-        $this->getRepository('ComponentBundle:MediaEntity')->truncate();
+        $this->getRepository('FeedBundle:NewsEntity')->truncate();
+        $this->getRepository('FeedBundle:CategoryEntity')->truncate();
+        $this->getRepository('FeedBundle:MediaEntity')->truncate();
     }
 }

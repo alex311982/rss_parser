@@ -1,9 +1,8 @@
 <?php
 
-namespace ComponentBundle\Repository;
+namespace FeedBundle\Repository;
 
-use ComponentBundle\Repository\Interfaces\RepositoryInterface;
-use Doctrine\ORM\Persisters\Entity\EntityPersister;
+use FeedBundle\Repository\Interfaces\RepositoryInterface;
 
 /**
  * NewsEntityRepository
@@ -16,6 +15,6 @@ class NewsEntityRepository extends \Doctrine\ORM\EntityRepository implements Rep
     public function truncate()
     {
         return $this->getEntityManager()
-            ->createQuery('DELETE FROM ComponentBundle:NewsEntity')->execute();
+            ->createQuery('DELETE FROM FeedBundle:NewsEntity')->execute();
     }
 }

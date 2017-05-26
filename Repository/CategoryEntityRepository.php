@@ -1,9 +1,8 @@
 <?php
 
-namespace ComponentBundle\Repository;
+namespace FeedBundle\Repository;
 
-use ComponentBundle\Repository\Interfaces\RepositoryInterface;
-use Doctrine\ORM\Persisters\Entity\EntityPersister;
+use FeedBundle\Repository\Interfaces\RepositoryInterface;
 
 /**
  * CategoryEntityRepository
@@ -16,6 +15,6 @@ class CategoryEntityRepository extends \Doctrine\ORM\EntityRepository implements
     public function truncate()
     {
         return $this->getEntityManager()
-            ->createQuery('DELETE FROM ComponentBundle:CategoryEntity')->execute();
+            ->createQuery('DELETE FROM FeedBundle:CategoryEntity')->execute();
     }
 }

@@ -2,10 +2,9 @@
 
 namespace FeedBundle\Utils;
 
-use ComponentBundle\Entity\CategoryEntity;
-use ComponentBundle\Entity\MediaEntity;
-use ComponentBundle\Entity\NewsEntity;
-use FeedIo\Feed\Item;
+use FeedBundle\Entity\CategoryEntity;
+use FeedBundle\Entity\MediaEntity;
+use FeedBundle\Entity\NewsEntity;
 use FeedIo\Feed\ItemInterface;
 
 interface FeedEntityManagerInterface
@@ -14,5 +13,5 @@ interface FeedEntityManagerInterface
 
     public function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media): NewsEntity;
 
-    public function addMedia(Item $item): ?MediaEntity;
+    public function addMedia(ItemInterface $item): ?MediaEntity;
 }
