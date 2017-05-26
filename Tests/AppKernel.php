@@ -11,6 +11,7 @@
 
 namespace FeedBundle\Tests;
 
+use FeedBundle\FeedBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 
@@ -28,7 +29,14 @@ class AppKernel extends Kernel
 
     public function registerBundles()
     {
-        return [];
+        return [
+            new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
+            new \Symfony\Bundle\TwigBundle\TwigBundle(),
+            new \Symfony\Bundle\MonologBundle\MonologBundle(),
+            new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new FeedBundle()
+        ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
