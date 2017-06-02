@@ -10,15 +10,16 @@ namespace FeedBundle\Tests\Repository;
 
 use FeedBundle\Entity\CategoryEntity;
 use FeedBundle\Repository\CategoryEntityRepository;
+use FeedBundle\Repository\MediaEntityRepository;
 
-class CategoryEntityRepositoryTest extends AbstractRepositoryTestCase
+class MediaEntityRepositoryTest extends AbstractRepositoryTestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     private $em;
     /**
-     * @var CategoryEntityRepository
+     * @var MediaEntityRepository
      */
     private $repo;
     /**
@@ -33,13 +34,13 @@ class CategoryEntityRepositoryTest extends AbstractRepositoryTestCase
             ->getManager();
 
         $this->repo = $this->em
-            ->getRepository('FeedBundle:CategoryEntity');
+            ->getRepository('FeedBundle:MediaEntity');
     }
 
     public function testDeleteAll()
     {
         //test categories
-        $category1 = new CategoryEntity('test_category_name');
+        $category1 = new CategoryEntity('test_Media_name');
         $this->em->persist($category1);
         $this->em->flush();
 

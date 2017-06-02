@@ -2,9 +2,9 @@
 
 namespace FeedBundle\Tests\Repository;
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
 use PHPUnit\Framework\TestCase;
-use FeedBundle\Tests\AppKernel;
 
 abstract class AbstractRepositoryTestCase extends TestCase
 {
@@ -12,19 +12,28 @@ abstract class AbstractRepositoryTestCase extends TestCase
      * @var AppKernel
      */
     protected $kernel;
-
     /**
      * @var \Doctrine\ORM\EntityManager
      */
     protected $entityManager;
-
     /**
      * @var \Symfony\Component\DependencyInjection\Container
      */
     protected $container;
+    /**
+     * @var []
+     */
+    protected $metadata;
+    /**
+     * @var SchemaTool
+     */
+    protected $tool;
 
     public function setUp()
     {
+        $loader = require __DIR__ . '/../../vendor/autoload.php';
+        AnnotationRegistry::registerLoader(array($loader, "loadClass"));
+
         // Boot the AppKernel in the test environment and with the debug.
         $this->kernel = new AppKernel('test', true);
         $this->kernel->boot();
@@ -41,6 +50,7 @@ abstract class AbstractRepositoryTestCase extends TestCase
 
     public function tearDown()
     {
+        $this->tool->dropSchema($this->metadata);
         // Shutdown the kernel.
         $this->kernel->shutdown();
 
@@ -50,12 +60,13 @@ abstract class AbstractRepositoryTestCase extends TestCase
     protected function generateSchema()
     {
         // Get the metadata of the application to create the schema.
-        $metadata = $this->getMetadata();
+        $this->metadata = $this->getMetadata();
 
-        if ( ! empty($metadata)) {
+        if ( ! empty($this->metadata)) {
             // Create SchemaTool
-            $tool = new SchemaTool($this->entityManager);
-            $tool->createSchema($metadata);
+            $this->tool = new SchemaTool($this->entityManager);
+            $this->tool->dropSchema($this->metadata);
+            $this->tool->createSchema($this->metadata);
         } else {
             throw new \Doctrine\DBAL\Schema\SchemaException('No Metadata Classes to process.');
         }

@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="news")
  * @ORM\Entity(repositoryClass="FeedBundle\Repository\NewsEntityRepository")
  */
-class NewsEntity
+class NewsEntity extends AbstractEntity
 {
     /**
      * @ORM\Column(type="integer")
@@ -80,12 +80,13 @@ class NewsEntity
 
     /**
      * NewsEntity constructor.
-     * @param $guid
-     * @param $category
-     * @param $title
-     * @param $description
-     * @param $pubDate
-     * @param $link
+     * @param string $guid
+     * @param CategoryEntity $category
+     * @param string $title
+     * @param string $description
+     * @param \DateTime $pubDate
+     * @param string $link
+     * @param MediaEntity|null $media
      */
     public function __construct(
         string $guid,

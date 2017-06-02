@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace FeedBundle\Tests;
+namespace FeedBundle\Tests\Repository;
 
 use FeedBundle\FeedBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -31,16 +31,16 @@ class AppKernel extends Kernel
     {
         return [
             new \Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new \Symfony\Bundle\SecurityBundle\SecurityBundle(),
-            new \Symfony\Bundle\TwigBundle\TwigBundle(),
-            new \Symfony\Bundle\MonologBundle\MonologBundle(),
             new \Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new \Debril\RssAtomBundle\DebrilRssAtomBundle(),
+            new \Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new \Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new FeedBundle()
         ];
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-
+        $loader->load(__DIR__.'/config/config.yml');
     }
 }

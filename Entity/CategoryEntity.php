@@ -14,7 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass="FeedBundle\Repository\CategoryEntityRepository")
  * @UniqueEntity(fields="name", message="Name is already taken.", repositoryMethod="findOneBy")
  */
-class CategoryEntity
+class CategoryEntity extends AbstractEntity
 {
     /**
      * @ORM\Column(type="integer")

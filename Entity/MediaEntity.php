@@ -11,7 +11,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @ORM\Table(name="media")
  * @ORM\Entity(repositoryClass="FeedBundle\Repository\MediaEntityRepository")
  */
-class MediaEntity
+class MediaEntity extends AbstractEntity
 {
     /**
      * @ORM\Column(type="integer")

@@ -7,6 +7,9 @@ use FeedBundle\Entity\MediaEntity;
 use FeedBundle\Entity\NewsEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use FeedBundle\Factory\CategoryFactory;
+use FeedBundle\Factory\MediaFactory;
+use FeedBundle\Factory\NewsFactory;
 use FeedIo\Feed\ItemInterface;
 
 class FeedEntityManager implements FeedEntityManagerInterface
@@ -41,7 +44,10 @@ class FeedEntityManager implements FeedEntityManagerInterface
             ? $this->persistedCategories->get($key)
             : null;
 
-        $category = $category ?: new CategoryEntity($categoryName);
+        $category = $category ?: CategoryFactory::getInstance([
+            'name' => $categoryName,
+        ]);
+
         $this->persistedCategories->set($key, $category);
         $this->em->persist($category);
 
@@ -50,15 +56,15 @@ class FeedEntityManager implements FeedEntityManagerInterface
 
     public function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media): NewsEntity
     {
-        $news = new NewsEntity(
-            $item->getPublicId(),
-            $category,
-            $item->getTitle(),
-            $item->getDescription(),
-            $item->getLastModified(),
-            $item->getLink(),
-            $media
-        );
+        $news = NewsFactory::getInstance([
+            'id' => $item->getPublicId(),
+            'category' => $category,
+            'title' => $item->getTitle(),
+            'description' => $item->getDescription(),
+            'lastModified' => $item->getLastModified(),
+            'link' => $item->getLink(),
+            'media' => $media
+        ]);
 
         $this->em->persist($news);
 
@@ -67,14 +73,14 @@ class FeedEntityManager implements FeedEntityManagerInterface
 
     public function addMedia(ItemInterface $item): ?MediaEntity
     {
-        $media= null;
+        $media = null;
 
         if ($mediaFromFeed = $item->getMedias()->current()) {
-            $media = new MediaEntity(
-                $mediaFromFeed->getType(),
-                $mediaFromFeed->getUrl(),
-                $mediaFromFeed->getLength()
-            );
+            $media = MediaFactory::getInstance([
+                'type' => $mediaFromFeed->getType(),
+                'url' => $mediaFromFeed->getUrl(),
+                'length' =>$mediaFromFeed->getLength()
+                ]);
 
             $this->em->persist($media);
         }
