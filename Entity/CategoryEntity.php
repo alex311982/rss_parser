@@ -48,10 +48,13 @@ class CategoryEntity extends AbstractEntity
     /**
      * CategoryEntity constructor.
      * @param string $name
+     * @internal param $this
      */
     public function __construct(string $name)
     {
         $this->name = $name;
+
+        return $this;
     }
 
     /**
@@ -64,10 +67,13 @@ class CategoryEntity extends AbstractEntity
 
     /**
      * @param int $id
+     * @return $this
      */
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
     }
 
     /**

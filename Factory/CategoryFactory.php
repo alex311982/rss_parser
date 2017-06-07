@@ -12,8 +12,8 @@ use FeedBundle\Entity\CategoryEntity;
  */
 class CategoryFactory implements FactoryInterface
 {
-    public static function getInstance(array $data)
+    public static function fromArray(array $data)
     {
-        return CategoryEntity::getEntityFromArray('FeedBundle\\Entity\\Category', $data);
+        return CategoryEntity::getEntityFromArray('FeedBundle\\Entity\\CategoryEntity', $data);
     }
 }

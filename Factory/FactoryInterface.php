@@ -4,5 +4,5 @@ namespace FeedBundle\Factory;
 
 interface FactoryInterface
 {
-    public static function getInstance(array $data);
+    public static function fromArray(array $data);
 }

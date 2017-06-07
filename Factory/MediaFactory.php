@@ -12,8 +12,8 @@ use FeedBundle\Entity\MediaEntity;
  */
 class MediaFactory implements FactoryInterface
 {
-    public static function getInstance(array $data)
+    public static function fromArray(array $data)
     {
-        return MediaEntity::getEntityFromArray('FeedBundle\\Entity\\Media', $data);
+        return MediaEntity::getEntityFromArray('FeedBundle\\Entity\\MediaEntity', $data);
     }
 }

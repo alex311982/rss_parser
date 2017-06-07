@@ -12,8 +12,8 @@ use FeedBundle\Entity\NewsEntity;
  */
 class NewsFactory implements FactoryInterface
 {
-    public static function getInstance(array $data)
+    public static function fromArray(array $data)
     {
-        return NewsEntity::getEntityFromArray('FeedBundle\\Entity\\News', $data);
+        return NewsEntity::getEntityFromArray('FeedBundle\\Entity\\NewsEntity', $data);
     }
 }

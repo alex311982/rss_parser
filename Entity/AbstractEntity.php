@@ -17,15 +17,18 @@ abstract class AbstractEntity
         $reflection = new \ReflectionClass($class);
         static::$instance = $reflection->newInstanceWithoutConstructor();
 
-        foreach ($data as $property) {
-            static::$instance->{'set' . $property}();
+        foreach ($data as $property => $value) {
+            if (!preg_match('/[A-Z]$/', $property{0})) {
+                $property = ucfirst($property);
+            }
+            static::$instance->{'set' . $property}($value);
         }
 
         return static::$instance;
     }
 
     public function __call($method, $args) {
-        $method = $this->getInUppercase($method);
+
 
         if (!method_exists(static::$instance, $method)) {
             throw new \Exception("unknown method [$method]");
@@ -35,14 +38,5 @@ abstract class AbstractEntity
             array(static::$instance, $method),
             $args
         );
-    }
-
-    private function getInUppercase(string $method): string
-    {
-        if (!preg_match('/[A-Z]$/', $method{0})) {
-            $method = ucfirst($method);
-        }
-
-        return $method;
     }
 }

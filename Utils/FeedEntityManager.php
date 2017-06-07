@@ -34,8 +34,9 @@ class FeedEntityManager implements FeedEntityManagerInterface
 
     public function addCategory(ItemInterface $item): CategoryEntity
     {
-        $categoryName = !is_null($item->getCategories()->current())
-            ? $item->getCategories()->current()->getLabel() :
+        $currentCategory = $item->getCategories()->current();
+        $categoryName = !empty($currentCategory->getLabel())
+            ? $currentCategory->getLabel() :
             'No name category';
 
         $key = md5($categoryName);
@@ -44,7 +45,7 @@ class FeedEntityManager implements FeedEntityManagerInterface
             ? $this->persistedCategories->get($key)
             : null;
 
-        $category = $category ?: CategoryFactory::getInstance([
+        $category = is_object($category) ? $category : CategoryFactory::fromArray([
             'name' => $categoryName,
         ]);
 
@@ -54,14 +55,14 @@ class FeedEntityManager implements FeedEntityManagerInterface
         return $category;
     }
 
-    public function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media): NewsEntity
+    public function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media = null): NewsEntity
     {
-        $news = NewsFactory::getInstance([
-            'id' => $item->getPublicId(),
+        $news = NewsFactory::fromArray([
+            'guid' => $item->getPublicId(),
             'category' => $category,
             'title' => $item->getTitle(),
             'description' => $item->getDescription(),
-            'lastModified' => $item->getLastModified(),
+            'pubDate' => $item->getLastModified(),
             'link' => $item->getLink(),
             'media' => $media
         ]);
@@ -76,7 +77,7 @@ class FeedEntityManager implements FeedEntityManagerInterface
         $media = null;
 
         if ($mediaFromFeed = $item->getMedias()->current()) {
-            $media = MediaFactory::getInstance([
+            $media = MediaFactory::fromArray([
                 'type' => $mediaFromFeed->getType(),
                 'url' => $mediaFromFeed->getUrl(),
                 'length' =>$mediaFromFeed->getLength()
