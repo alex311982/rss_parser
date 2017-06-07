@@ -1,10 +1,10 @@
 <?php
 
-namespace FeedBundle\Handler;
+namespace Gubarev\Bundle\FeedBundle\Handler;
 
 use Doctrine\ORM\EntityManagerInterface;
-use FeedBundle\Exception\FeederException;
-use FeedBundle\Utils\FeedEntityManagerInterface;
+use Gubarev\Bundle\FeedBundle\Exception\FeederException;
+use Gubarev\Bundle\FeedBundle\Utils\FeedEntityManagerInterface;
 use FeedIo\FeedInterface;
 use FeedIo\FeedIo;
 use FeedIo\FeedIoException;
@@ -108,8 +108,8 @@ class FeedHandler implements FeedHandlerInterface
 
     protected function truncateTables()
     {
-        $this->getRepository('FeedBundle:NewsEntity')->truncate();
-        $this->getRepository('FeedBundle:CategoryEntity')->truncate();
-        $this->getRepository('FeedBundle:MediaEntity')->truncate();
+        $this->getRepository('Gubarev\Bundle\FeedBundle:NewsEntity')->truncate();
+        $this->getRepository('Gubarev\Bundle\FeedBundle:CategoryEntity')->truncate();
+        $this->getRepository('Gubarev\Bundle\FeedBundle:MediaEntity')->truncate();
     }
 }

@@ -1,10 +1,10 @@
 {
-    "name": "alex/rss_parser",
+    "name": "gubarev/rss_feeder",
     "license": "MIT",
     "type": "symfony-bundle",
     "autoload": {
         "psr-4": {
-            "FeedBundle\\": ""
+            "Gubarev\\Bundle\\FeedBundle\\": ""
         }
     },
     "require": {

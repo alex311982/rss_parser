@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Repository;
+namespace Gubarev\Bundle\FeedBundle\Repository;
 
 /**
  * MediaEntityRepository
@@ -13,6 +13,6 @@ class MediaEntityRepository extends \Doctrine\ORM\EntityRepository
     public function truncate()
     {
         return $this->getEntityManager()
-            ->createQuery('DELETE FROM FeedBundle:MediaEntity')->execute();
+            ->createQuery('DELETE FROM Gubarev\Bundle\FeedBundle\Entity\MediaEntity')->execute();
     }
 }

@@ -1,10 +1,10 @@
 services:
 
     feed.manager:
-        class: FeedBundle\Utils\FeedEntityManager
+        class: Gubarev\Bundle\FeedBundle\Utils\FeedEntityManager
         arguments: ["@doctrine.orm.entity_manager"]
         autowire: true
 
     feed.handler:
-        class: FeedBundle\Handler\FeedHandler
+        class: Gubarev\Bundle\FeedBundle\Handler\FeedHandler
         arguments: ["@feedio", "@doctrine.orm.entity_manager", "%rss_feeder.limit_curl%", "@feed.manager"]

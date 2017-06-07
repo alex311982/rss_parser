@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FeedBundle\Tests\Repository;
+namespace Gubarev\Bundle\FeedBundle\Tests\Repository;
 
-use FeedBundle\FeedBundle;
+use Gubarev\Bundle\FeedBundle\FeedBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\HttpKernel\Kernel;
 

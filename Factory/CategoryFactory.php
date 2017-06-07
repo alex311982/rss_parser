@@ -1,8 +1,8 @@
 <?php
 
-namespace FeedBundle\Factory;
+namespace Gubarev\Bundle\FeedBundle\Factory;
 
-use FeedBundle\Entity\CategoryEntity;
+use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
 
 /**
  * Created by PhpStorm.
@@ -14,6 +14,6 @@ class CategoryFactory implements FactoryInterface
 {
     public static function fromArray(array $data)
     {
-        return CategoryEntity::getEntityFromArray('FeedBundle\\Entity\\CategoryEntity', $data);
+        return CategoryEntity::getEntityFromArray(CategoryEntity::class, $data);
     }
 }

@@ -6,11 +6,11 @@
  * Time: 5:56 PM
  */
 
-namespace FeedBundle\Tests\Repository;
+namespace Gubarev\Bundle\FeedBundle\Tests\Repository;
 
-use FeedBundle\Entity\CategoryEntity;
-use FeedBundle\Repository\CategoryEntityRepository;
-use FeedBundle\Repository\NewsEntityRepository;
+use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
+use Gubarev\Bundle\FeedBundle\Entity\NewsEntity;
+use Gubarev\Bundle\FeedBundle\Repository\NewsEntityRepository;
 
 class NewsEntityRepositoryTest extends AbstractRepositoryTestCase
 {
@@ -34,7 +34,7 @@ class NewsEntityRepositoryTest extends AbstractRepositoryTestCase
             ->getManager();
 
         $this->repo = $this->em
-            ->getRepository('FeedBundle:NewsEntity');
+            ->getRepository(NewsEntity::class);
     }
 
     public function testDeleteAll()

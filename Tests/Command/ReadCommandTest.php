@@ -8,10 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace FeedBundle\Tests\Command;
+namespace Gubarev\Bundle\FeedBundle\Tests\Command;
 
-use FeedBundle\Command\ReadCommand;
-use FeedBundle\Exception\FeederException;
+use Gubarev\Bundle\FeedBundle\Command\ReadCommand;
+use Gubarev\Bundle\FeedBundle\Exception\FeederException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -50,7 +50,7 @@ class ReadCommandTest extends TestCase
 
     private function getContainer($url, ?int $count, $isThrowException)
     {
-        $feedHandler = $this->getMockBuilder('FeedBundle\Handler\FeedHandlerInterface')->getMock();
+        $feedHandler = $this->getMockBuilder('Gubarev\Bundle\FeedBundle\Handler\FeedHandlerInterface')->getMock();
 
         if (!$isThrowException) {
             $feedHandler

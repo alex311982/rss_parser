@@ -1,10 +1,10 @@
 <?php
 
-namespace FeedBundle\Handler;
+namespace Gubarev\Bundle\FeedBundle\Handler;
 
 /**
  * Interface FeedHandlerInterface
- * @package FeedBundle\Handler
+ * @package Gubarev\Bundle\FeedBundle\Handler
  */
 interface FeedHandlerInterface
 {

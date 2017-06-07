@@ -1,8 +1,8 @@
 <?php
 
-namespace FeedBundle\Factory;
+namespace Gubarev\Bundle\FeedBundle\Factory;
 
-use FeedBundle\Entity\NewsEntity;
+use Gubarev\Bundle\FeedBundle\Entity\NewsEntity;
 
 /**
  * Created by PhpStorm.
@@ -14,6 +14,6 @@ class NewsFactory implements FactoryInterface
 {
     public static function fromArray(array $data)
     {
-        return NewsEntity::getEntityFromArray('FeedBundle\\Entity\\NewsEntity', $data);
+        return NewsEntity::getEntityFromArray(NewsEntity::class, $data);
     }
 }

@@ -6,12 +6,12 @@
  * Time: 8:15 PM
  */
 
-namespace FeedBundle\Tests\Utils;
+namespace Gubarev\Bundle\FeedBundle\Tests\Utils;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
-use FeedBundle\Entity\CategoryEntity;
-use FeedBundle\Utils\FeedEntityManager;
+use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
+use Gubarev\Bundle\FeedBundle\Utils\FeedEntityManager;
 use FeedIo\Feed\Item;
 use FeedIo\Feed\Item\Media;
 use FeedIo\Feed\Node\Category;

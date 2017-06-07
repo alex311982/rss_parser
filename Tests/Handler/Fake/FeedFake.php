@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Tests\Handler\Fake;
+namespace Gubarev\Bundle\FeedBundle\Tests\Handler\Fake;
 
 use FeedIo\FeedInterface;
 

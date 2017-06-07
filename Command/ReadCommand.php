@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace FeedBundle\Command;
+namespace Gubarev\Bundle\FeedBundle\Command;
 
-use FeedBundle\Exception\FeederException;
+use Gubarev\Bundle\FeedBundle\Exception\FeederException;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

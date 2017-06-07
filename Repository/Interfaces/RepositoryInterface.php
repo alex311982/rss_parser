@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Repository\Interfaces;
+namespace Gubarev\Bundle\FeedBundle\Repository\Interfaces;
 
 interface RepositoryInterface
 {

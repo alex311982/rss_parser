@@ -6,7 +6,7 @@
  * Time: 6:24 PM
  */
 
-namespace FeedBundle\Entity;
+namespace Gubarev\Bundle\FeedBundle\Entity;
 
 abstract class AbstractEntity
 {

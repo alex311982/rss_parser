@@ -1,15 +1,15 @@
 <?php
 
-namespace FeedBundle\Utils;
+namespace Gubarev\Bundle\FeedBundle\Utils;
 
-use FeedBundle\Entity\CategoryEntity;
-use FeedBundle\Entity\MediaEntity;
-use FeedBundle\Entity\NewsEntity;
+use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
+use Gubarev\Bundle\FeedBundle\Entity\MediaEntity;
+use Gubarev\Bundle\FeedBundle\Entity\NewsEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use FeedBundle\Factory\CategoryFactory;
-use FeedBundle\Factory\MediaFactory;
-use FeedBundle\Factory\NewsFactory;
+use Gubarev\Bundle\FeedBundle\Factory\CategoryFactory;
+use Gubarev\Bundle\FeedBundle\Factory\MediaFactory;
+use Gubarev\Bundle\FeedBundle\Factory\NewsFactory;
 use FeedIo\Feed\ItemInterface;
 
 class FeedEntityManager implements FeedEntityManagerInterface

@@ -6,15 +6,15 @@
  * Time: 7:08 PM
  */
 
-namespace FeedBundle\Tests\Handler;
+namespace Gubarev\Bundle\FeedBundle\Tests\Handler;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use FeedBundle\Exception\FeederException;
-use FeedBundle\Handler\FeedHandler;
-use FeedBundle\Tests\Handler\Fake\FeedFake;
-use FeedBundle\Utils\FeedEntityManagerInterface;
+use Gubarev\Bundle\FeedBundle\Exception\FeederException;
+use Gubarev\Bundle\FeedBundle\Handler\FeedHandler;
+use Gubarev\Bundle\FeedBundle\Tests\Handler\Fake\FeedFake;
+use Gubarev\Bundle\FeedBundle\Utils\FeedEntityManagerInterface;
 use FeedIo\Feed\ItemInterface;
 use FeedIo\FeedIo;
 use FeedIo\FeedIoException;
@@ -23,7 +23,7 @@ use FeedIo\Reader\Result;
 
 /**
  * Class FeedHandlerTest
- * @package FeedBundle\Tests\Handler
+ * @package Gubarev\Bundle\FeedBundle\Tests\Handler
  */
 class FeedHandlerTest extends TestCase
 {

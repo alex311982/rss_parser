@@ -1,10 +1,10 @@
 <?php
 
-namespace FeedBundle\Utils;
+namespace Gubarev\Bundle\FeedBundle\Utils;
 
-use FeedBundle\Entity\CategoryEntity;
-use FeedBundle\Entity\MediaEntity;
-use FeedBundle\Entity\NewsEntity;
+use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
+use Gubarev\Bundle\FeedBundle\Entity\MediaEntity;
+use Gubarev\Bundle\FeedBundle\Entity\NewsEntity;
 use FeedIo\Feed\ItemInterface;
 
 interface FeedEntityManagerInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Exception;
+namespace Gubarev\Bundle\FeedBundle\Exception;
 
 class FeederException extends \Exception
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace FeedBundle\Repository;
+namespace Gubarev\Bundle\FeedBundle\Repository;
 
-use FeedBundle\Repository\Interfaces\RepositoryInterface;
+use Gubarev\Bundle\FeedBundle\Repository\Interfaces\RepositoryInterface;
 
 /**
  * CategoryEntityRepository
@@ -15,6 +15,6 @@ class CategoryEntityRepository extends \Doctrine\ORM\EntityRepository implements
     public function truncate()
     {
         return $this->getEntityManager()
-            ->createQuery('DELETE FROM FeedBundle:CategoryEntity')->execute();
+            ->createQuery('DELETE FROM Gubarev\Bundle\FeedBundle\Entity\CategoryEntity')->execute();
     }
 }

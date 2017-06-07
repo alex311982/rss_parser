@@ -1,8 +1,8 @@
 <?php
 
-namespace FeedBundle\Factory;
+namespace Gubarev\Bundle\FeedBundle\Factory;
 
-use FeedBundle\Entity\MediaEntity;
+use Gubarev\Bundle\FeedBundle\Entity\MediaEntity;
 
 /**
  * Created by PhpStorm.
@@ -14,6 +14,6 @@ class MediaFactory implements FactoryInterface
 {
     public static function fromArray(array $data)
     {
-        return MediaEntity::getEntityFromArray('FeedBundle\\Entity\\MediaEntity', $data);
+        return MediaEntity::getEntityFromArray(MediaEntity::class, $data);
     }
 }

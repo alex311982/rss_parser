@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\DependencyInjection;
+namespace Gubarev\Bundle\FeedBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

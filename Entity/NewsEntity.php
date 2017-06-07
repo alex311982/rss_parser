@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Entity;
+namespace Gubarev\Bundle\FeedBundle\Entity;
 
 use JMS\Serializer\SerializerBuilder;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -10,7 +10,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity
  * @ORM\Table(name="news")
- * @ORM\Entity(repositoryClass="FeedBundle\Repository\NewsEntityRepository")
+ * @ORM\Entity(repositoryClass="Gubarev\Bundle\FeedBundle\Repository\NewsEntityRepository")
  */
 class NewsEntity extends AbstractEntity
 {
@@ -263,11 +263,11 @@ class NewsEntity extends AbstractEntity
     /**
      * Set media
      *
-     * @param \FeedBundle\Entity\MediaEntity $media
+     * @param \Gubarev\Bundle\FeedBundle\Entity\MediaEntity $media
      *
      * @return $this
      */
-    public function setMedia(\FeedBundle\Entity\MediaEntity $media = null)
+    public function setMedia(\Gubarev\Bundle\FeedBundle\Entity\MediaEntity $media = null)
     {
         $this->media = $media;
 
@@ -277,7 +277,7 @@ class NewsEntity extends AbstractEntity
     /**
      * Get media
      *
-     * @return \FeedBundle\Entity\MediaEntity
+     * @return \Gubarev\Bundle\FeedBundle\Entity\MediaEntity
      */
     public function getMedia()
     {

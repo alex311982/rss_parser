@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Entity;
+namespace Gubarev\Bundle\FeedBundle\Entity;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
@@ -9,7 +9,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * @ORM\Entity
  * @ORM\Table(name="media")
- * @ORM\Entity(repositoryClass="FeedBundle\Repository\MediaEntityRepository")
+ * @ORM\Entity(repositoryClass="Gubarev\Bundle\FeedBundle\Repository\MediaEntityRepository")
  */
 class MediaEntity extends AbstractEntity
 {

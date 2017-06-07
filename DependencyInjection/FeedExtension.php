@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\DependencyInjection;
+namespace Gubarev\Bundle\FeedBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;

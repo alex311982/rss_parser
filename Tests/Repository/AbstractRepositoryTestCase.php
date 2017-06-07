@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Tests\Repository;
+namespace Gubarev\Bundle\FeedBundle\Tests\Repository;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Tools\SchemaTool;

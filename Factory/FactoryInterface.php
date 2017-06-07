@@ -1,6 +1,6 @@
 <?php
 
-namespace FeedBundle\Factory;
+namespace Gubarev\Bundle\FeedBundle\Factory;
 
 interface FactoryInterface
 {

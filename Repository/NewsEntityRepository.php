@@ -1,8 +1,8 @@
 <?php
 
-namespace FeedBundle\Repository;
+namespace Gubarev\Bundle\FeedBundle\Repository;
 
-use FeedBundle\Repository\Interfaces\RepositoryInterface;
+use Gubarev\Bundle\FeedBundle\Repository\Interfaces\RepositoryInterface;
 
 /**
  * NewsEntityRepository
@@ -15,6 +15,6 @@ class NewsEntityRepository extends \Doctrine\ORM\EntityRepository implements Rep
     public function truncate()
     {
         return $this->getEntityManager()
-            ->createQuery('DELETE FROM FeedBundle:NewsEntity')->execute();
+            ->createQuery('DELETE FROM Gubarev\Bundle\FeedBundle\Entity\NewsEntity')->execute();
     }
 }
