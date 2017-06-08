@@ -8,9 +8,6 @@
 
 namespace Gubarev\Bundle\FeedBundle\Tests\Handler;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\EntityRepository;
 use Gubarev\Bundle\FeedBundle\Exception\FeederException;
 use Gubarev\Bundle\FeedBundle\Handler\FeedHandler;
 use Gubarev\Bundle\FeedBundle\Tests\Handler\Fake\FeedFake;
@@ -39,57 +36,20 @@ class FeedHandlerTest extends TestCase
      */
     public function testGetLastFeeds($data, $setCountInCommand, $expectedCount)
     {
-        $feeder = $this->getFeeder();
-        $feeder->expects($this->exactly($expectedCount))
-            ->method('addCategory');
-        $feeder->expects($this->exactly($expectedCount))
-            ->method('addMedia');
-        $feeder->expects($this->exactly($expectedCount))
-            ->method('addNews');
+        $feeder = $this->getFeeder($expectedCount);
 
-        $handler = new FeedHandler($this->getFeedParser($data), $this->getEM(), $this->limit, $feeder);
+        $handler = new FeedHandler($this->getFeedParser($data), $feeder, $this->limit);
 
         $this->assertEquals($expectedCount, $handler->getLastFeeds('', $setCountInCommand));
     }
 
     public function testGetLastFeedsReadException()
     {
-        $feeder = $this->getFeeder();
-        $feeder->expects($this->never())
-            ->method('addCategory');
-        $feeder->expects($this->never())
-            ->method('addMedia');
-        $feeder->expects($this->never())
-            ->method('addNews');
+        $feeder = $this->getFeeder(null);
 
-        $handler = new FeedHandler($this->getFeedParser([], true), $this->getEM(true), $this->limit, $feeder);
+        $handler = new FeedHandler($this->getFeedParser([], true), $feeder, $this->limit);
         $this->expectException(FeederException::class);
         $handler->getLastFeeds('', 1);
-    }
-
-    protected function getEM($isExceptionWillBeThrown = false) {
-        if (!$isExceptionWillBeThrown) {
-            $repository = $this->getMockBuilder(EntityRepository::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['truncate'])
-                ->getMock();
-            $repository->expects($this->exactly(3))
-                ->method('truncate');
-
-            $em = $this->getMockBuilder(EntityManager::class)
-                ->disableOriginalConstructor()
-                ->setMethods(['getRepository', 'flush'])
-                ->getMock();
-            $em->expects($this->any())
-                ->method('getRepository')
-                ->willReturn($repository);
-            $em->expects($this->once())
-                ->method('flush');
-        } else {
-            $em =  $this->createMock(EntityManagerInterface::class);
-        }
-
-        return $em;
     }
 
     protected function getFeedParser($data, $isExceptionWillBeThrown = false) {
@@ -123,12 +83,52 @@ class FeedHandlerTest extends TestCase
         return $feedParser;
     }
 
-    protected function getFeeder()
+    protected function getFeeder($expectedCount)
     {
-        return $this->getMockBuilder(FeedEntityManagerInterface::class)
+        $feeder = $this->getMockBuilder(FeedEntityManagerInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['addCategory', 'addNews', 'addMedia'])
+            ->setMethods(['addCategory', 'addNews', 'addMedia', 'truncateTables', 'flushEntities'])
             ->getMock();
+
+        if ($expectedCount === 0) {
+            $feeder->expects($this->once())
+                ->method('truncateTables');
+
+            $feeder->expects($this->never())
+                ->method('addCategory');
+            $feeder->expects($this->never())
+                ->method('addMedia');
+            $feeder->expects($this->never())
+                ->method('addNews');
+            $feeder->expects($this->never())
+                ->method('flushEntities');
+        } elseif ($expectedCount > 0) {
+            $feeder->expects($this->once())
+                ->method('truncateTables');
+
+            $feeder->expects($this->exactly($expectedCount))
+                ->method('addCategory');
+            $feeder->expects($this->exactly($expectedCount))
+                ->method('addMedia');
+            $feeder->expects($this->exactly($expectedCount))
+                ->method('addNews');
+            $feeder->expects($this->once())
+                ->method('flushEntities');
+        } elseif ($expectedCount === null) {
+            $feeder->expects($this->never())
+                ->method('truncateTables');
+
+            $feeder->expects($this->never())
+                ->method('addCategory');
+            $feeder->expects($this->never())
+                ->method('addMedia');
+            $feeder->expects($this->never())
+                ->method('addNews');
+            $feeder->expects($this->never())
+                ->method('flushEntities');
+        }
+
+        return $feeder;
     }
 
     public function feedsProvider()

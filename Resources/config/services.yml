@@ -7,4 +7,4 @@ services:
 
     feed.handler:
         class: Gubarev\Bundle\FeedBundle\Handler\FeedHandler
-        arguments: ["@feedio", "@doctrine.orm.entity_manager", "%rss_feeder.limit_curl%", "@feed.manager"]
+        arguments: ["@feedio", "@feed.manager", "%rss_feeder.limit_curl%"]

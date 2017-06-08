@@ -10,6 +10,7 @@ namespace Gubarev\Bundle\FeedBundle\Tests\Utils;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
 use Gubarev\Bundle\FeedBundle\Utils\FeedEntityManager;
 use FeedIo\Feed\Item;
@@ -25,8 +26,21 @@ class FeedEntityManagerTest extends TestCase
     {
         $this->em = $this->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['persist'])
+            ->setMethods(['persist', 'getRepository'])
             ->getMock();
+    }
+
+    public function testTruncateTables() {
+        $repository = $this->getMockBuilder(EntityRepository::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['truncate'])
+            ->getMock();
+        $repository->expects($this->any())
+            ->method('truncate');
+
+        $this->em->expects($this->any())
+            ->method('getRepository')
+            ->willReturn($repository);
     }
 
     public function testAddCategory()

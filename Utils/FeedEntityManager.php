@@ -7,6 +7,7 @@ use Gubarev\Bundle\FeedBundle\Entity\MediaEntity;
 use Gubarev\Bundle\FeedBundle\Entity\NewsEntity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Gubarev\Bundle\FeedBundle\Exception\FeederException;
 use Gubarev\Bundle\FeedBundle\Factory\CategoryFactory;
 use Gubarev\Bundle\FeedBundle\Factory\MediaFactory;
 use Gubarev\Bundle\FeedBundle\Factory\NewsFactory;
@@ -23,6 +24,11 @@ class FeedEntityManager implements FeedEntityManagerInterface
      */
     protected $persistedCategories;
 
+    /**
+     * FeedEntityManager constructor.
+     * @param EntityManagerInterface $em
+     * @param ArrayCollection $category
+     */
     public function __construct(
         EntityManagerInterface $em,
         ArrayCollection $category
@@ -32,6 +38,10 @@ class FeedEntityManager implements FeedEntityManagerInterface
         $this->persistedCategories = $category;
     }
 
+    /**
+     * @param ItemInterface $item
+     * @return CategoryEntity
+     */
     public function addCategory(ItemInterface $item): CategoryEntity
     {
         $currentCategory = $item->getCategories()->current();
@@ -55,6 +65,12 @@ class FeedEntityManager implements FeedEntityManagerInterface
         return $category;
     }
 
+    /**
+     * @param ItemInterface $item
+     * @param CategoryEntity $category
+     * @param MediaEntity|null $media
+     * @return NewsEntity
+     */
     public function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media = null): NewsEntity
     {
         $news = NewsFactory::fromArray([
@@ -72,6 +88,10 @@ class FeedEntityManager implements FeedEntityManagerInterface
         return $news;
     }
 
+    /**
+     * @param ItemInterface $item
+     * @return MediaEntity|null
+     */
     public function addMedia(ItemInterface $item): ?MediaEntity
     {
         $media = null;
@@ -87,5 +107,31 @@ class FeedEntityManager implements FeedEntityManagerInterface
         }
 
         return $media;
+    }
+
+    /**
+     * @throws FeederException
+     */
+    public function truncateTables()
+    {
+        try {
+            $this->em->getRepository(NewsEntity::class)->truncate();
+            $this->em->getRepository(CategoryEntity::class)->truncate();
+            $this->em->getRepository(MediaEntity::class)->truncate();
+        } catch (\Exception $e) {
+            throw new FeederException(FeederException::ORM_ERROR_MSG);
+        }
+    }
+
+    /**
+     * @throws FeederException
+     */
+    public function flushEntities()
+    {
+        try {
+            $this->em->flush();
+        } catch (\Exception $e) {
+            throw new FeederException(FeederException::ORM_ERROR_MSG);
+        }
     }
 }

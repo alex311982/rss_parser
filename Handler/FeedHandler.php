@@ -2,7 +2,6 @@
 
 namespace Gubarev\Bundle\FeedBundle\Handler;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Gubarev\Bundle\FeedBundle\Exception\FeederException;
 use Gubarev\Bundle\FeedBundle\Utils\FeedEntityManagerInterface;
 use FeedIo\FeedInterface;
@@ -16,10 +15,6 @@ class FeedHandler implements FeedHandlerInterface
      */
     protected $feedParser;
     /**
-     * @var EntityManagerInterface
-     */
-    protected $em;
-    /**
      * @var int
      */
     protected $curlLimit;
@@ -30,15 +25,13 @@ class FeedHandler implements FeedHandlerInterface
 
     public function __construct(
         FeedIo $feedParser,
-        EntityManagerInterface $em,
-        int $curlLimit,
-        FeedEntityManagerInterface $feedEntityManager
+        FeedEntityManagerInterface $feedEntityManager,
+        int $curlLimit
     )
     {
         $this->feedParser = $feedParser;
-        $this->em = $em;
-        $this->curlLimit = $curlLimit;
         $this->feedEntityManager = $feedEntityManager;
+        $this->curlLimit = $curlLimit;
     }
 
     /**
@@ -47,16 +40,14 @@ class FeedHandler implements FeedHandlerInterface
      * @param string $url
      * @param int $count
      * @return int
-     * @throws FeederException
      */
     public function getLastFeeds(string $url, int $count): int
     {
         $i = 0;
 
         $feed = $this->process($url);
+        $this->feedEntityManager->truncateTables();
         $count = $this->getLimit($count);
-
-        $this->truncateTables();
 
         foreach($feed as $i => $item) {
             $i++;
@@ -69,10 +60,8 @@ class FeedHandler implements FeedHandlerInterface
             }
         }
 
-        try {
-            $this->em->flush();
-        } catch (\Exception $e) {
-            throw new FeederException(FeederException::ORM_ERROR_MSG);
+        if ($i > 0) {
+            $this->feedEntityManager->flushEntities();
         }
 
         return $i;
@@ -95,21 +84,5 @@ class FeedHandler implements FeedHandlerInterface
         } catch (FeedIoException $e) {
             throw new FeederException(FeederException::FEEDER_ERROR);
         }
-    }
-
-    /**
-     * @param string $metaName
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getRepository(string $metaName): \Doctrine\Common\Persistence\ObjectRepository
-    {
-        return $this->em->getRepository($metaName);
-    }
-
-    protected function truncateTables()
-    {
-        $this->getRepository('Gubarev\Bundle\FeedBundle:NewsEntity')->truncate();
-        $this->getRepository('Gubarev\Bundle\FeedBundle:CategoryEntity')->truncate();
-        $this->getRepository('Gubarev\Bundle\FeedBundle:MediaEntity')->truncate();
     }
 }

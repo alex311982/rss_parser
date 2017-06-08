@@ -14,4 +14,8 @@ interface FeedEntityManagerInterface
     public function addNews(ItemInterface $item, CategoryEntity $category, ?MediaEntity $media): NewsEntity;
 
     public function addMedia(ItemInterface $item): ?MediaEntity;
+
+    public function truncateTables();
+
+    public function flushEntities();
 }
