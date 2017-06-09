@@ -10,38 +10,14 @@ namespace Gubarev\Bundle\FeedBundle\Tests\Repository;
 
 use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
 use Gubarev\Bundle\FeedBundle\Entity\MediaEntity;
-use Gubarev\Bundle\FeedBundle\Repository\MediaEntityRepository;
 
 class MediaEntityRepositoryTest extends AbstractRepositoryTestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
-    /**
-     * @var MediaEntityRepository
-     */
-    private $repo;
-    /**
-     * {@inheritDoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->em = $this->kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
-        $this->repo = $this->em
-            ->getRepository(MediaEntity::class);
-    }
-
     public function testDeleteAll()
     {
-        //test categories
-        $category1 = new CategoryEntity('test_Media_name');
-        $this->em->persist($category1);
+        //test media
+        $media = new MediaEntity('test_type', 'test_url', 200);
+        $this->em->persist($media);
         $this->em->flush();
 
         $this->repo
@@ -52,5 +28,49 @@ class MediaEntityRepositoryTest extends AbstractRepositoryTestCase
         $count = $qb->getQuery()->getSingleScalarResult();
 
         $this->assertEquals($count, 0);
+    }
+
+    public function testFindTotalByConditions()
+    {
+        //test media
+        $media1 = new MediaEntity('test_type', 'test_url', 200);
+        $this->em->persist($media1);
+
+        //test media
+        $media2 = new  MediaEntity('test_type', 'test_url_2', 300);
+        $this->em->persist($media2);
+
+        //test media
+        $media3 = new  MediaEntity('test_type_2', 'test_url', 400);
+        $this->em->persist($media3);
+
+        $this->em->flush();
+
+        $total1 = $this->repo
+            ->findTotalByConditions([
+                'type' => 'test_type'
+            ]);
+
+        $this->assertEquals($total1, 2);
+
+        $total2 = $this->repo
+            ->findTotalByConditions([
+                'url' => 'test_url'
+            ]);
+
+        $this->assertEquals($total2, 2);
+
+        $total3 = $this->repo
+            ->findTotalByConditions([
+                'length' => 300
+            ]);
+
+        $this->assertEquals($total3, 1);
+    }
+
+    public function setupRepository()
+    {
+        $this->repo = $this->em
+            ->getRepository(MediaEntity::class);
     }
 }

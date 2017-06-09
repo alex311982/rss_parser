@@ -3,6 +3,7 @@
 namespace Gubarev\Bundle\FeedBundle\Repository;
 
 use Gubarev\Bundle\FeedBundle\Repository\Interfaces\RepositoryInterface;
+use Gubarev\Bundle\FeedBundle\Repository\Traits\Countable;
 
 /**
  * CategoryEntityRepository
@@ -12,6 +13,8 @@ use Gubarev\Bundle\FeedBundle\Repository\Interfaces\RepositoryInterface;
  */
 class CategoryEntityRepository extends \Doctrine\ORM\EntityRepository implements RepositoryInterface
 {
+    use Countable;
+
     public function truncate()
     {
         return $this->getEntityManager()

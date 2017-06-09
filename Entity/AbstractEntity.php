@@ -8,8 +8,13 @@
 
 namespace Gubarev\Bundle\FeedBundle\Entity;
 
-abstract class AbstractEntity
+use Gedmo\Timestampable\Timestampable;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+
+abstract class AbstractEntity implements Timestampable
 {
+    use TimestampableEntity;
+
     protected static $instance;
 
     public static function getEntityFromArray(string $class, array $data)

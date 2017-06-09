@@ -9,33 +9,9 @@
 namespace Gubarev\Bundle\FeedBundle\Tests\Repository;
 
 use Gubarev\Bundle\FeedBundle\Entity\CategoryEntity;
-use Gubarev\Bundle\FeedBundle\Repository\CategoryEntityRepository;
 
 class CategoryEntityRepositoryTest extends AbstractRepositoryTestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
-    /**
-     * @var CategoryEntityRepository
-     */
-    private $repo;
-    /**
-     * {@inheritDoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->em = $this->kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
-        $this->repo = $this->em
-            ->getRepository(CategoryEntity::class);
-    }
-
     public function testDeleteAll()
     {
         //test categories
@@ -51,5 +27,31 @@ class CategoryEntityRepositoryTest extends AbstractRepositoryTestCase
         $count = $qb->getQuery()->getSingleScalarResult();
 
         $this->assertEquals($count, 0);
+    }
+
+    public function testFindTotalByConditions()
+    {
+        //test categories
+        $category1 = new CategoryEntity('test_category_name');
+        $this->em->persist($category1);
+
+        //test categories
+        $category2 = new CategoryEntity('test_category_name_no_searched_by_criteria');
+        $this->em->persist($category2);
+
+        $this->em->flush();
+
+        $total = $this->repo
+            ->findTotalByConditions([
+                'name' => 'test_category_name'
+            ]);
+
+        $this->assertEquals($total, 1);
+    }
+
+    public function setupRepository()
+    {
+        $this->repo = $this->em
+            ->getRepository(CategoryEntity::class);
     }
 }

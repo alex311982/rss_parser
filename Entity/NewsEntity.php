@@ -70,15 +70,6 @@ class NewsEntity extends AbstractEntity
     protected $media;
 
     /**
-     *
-     * @var \DateTime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    /**
      * NewsEntity constructor.
      * @param string $guid
      * @param CategoryEntity $category
@@ -95,7 +86,7 @@ class NewsEntity extends AbstractEntity
         string $description,
         \DateTime $pubDate,
         string $link,
-        ?MediaEntity $media
+        ?MediaEntity $media = null
     ) {
         $this->guid = $guid;
         $this->category = $category;
@@ -282,30 +273,6 @@ class NewsEntity extends AbstractEntity
     public function getMedia()
     {
         return $this->media;
-    }
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return $this
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
     }
 
     /**

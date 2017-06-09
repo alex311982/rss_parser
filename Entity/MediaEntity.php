@@ -39,15 +39,6 @@ class MediaEntity extends AbstractEntity
     protected $length;
 
     /**
-     *
-     * @var \DateTime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    /**
      * MediaEntity constructor.
      * @param $type
      * @param $url
@@ -140,29 +131,5 @@ class MediaEntity extends AbstractEntity
     public function getLength()
     {
         return $this->length;
-    }
-
-    /**
-     * Set created
-     *
-     * @param \DateTime $created
-     *
-     * @return MediaEntity
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
-
-        return $this;
-    }
-
-    /**
-     * Get created
-     *
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
     }
 }

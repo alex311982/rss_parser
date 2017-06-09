@@ -14,34 +14,22 @@ use Gubarev\Bundle\FeedBundle\Repository\NewsEntityRepository;
 
 class NewsEntityRepositoryTest extends AbstractRepositoryTestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    private $em;
-    /**
-     * @var NewsEntityRepository
-     */
-    private $repo;
-    /**
-     * {@inheritDoc}
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->em = $this->kernel->getContainer()
-            ->get('doctrine')
-            ->getManager();
-
-        $this->repo = $this->em
-            ->getRepository(NewsEntity::class);
-    }
-
     public function testDeleteAll()
     {
-        //test categories
-        $category1 = new CategoryEntity('test_News_name');
+        //test category
+        $category1 = new CategoryEntity('test_category');
         $this->em->persist($category1);
+
+        //test news
+        $news = new NewsEntity(
+            'test_News_name',
+            $category1,
+            'test_news_title',
+            'test_news_desc',
+            new \DateTime,
+            'test_news_link'
+        );
+        $this->em->persist($news);
         $this->em->flush();
 
         $this->repo
@@ -52,5 +40,49 @@ class NewsEntityRepositoryTest extends AbstractRepositoryTestCase
         $count = $qb->getQuery()->getSingleScalarResult();
 
         $this->assertEquals($count, 0);
+    }
+
+    public function testFindTotalByConditions()
+    {
+        //test category
+        $category = new CategoryEntity('test_category');
+        $this->em->persist($category);
+
+        //test news
+        $news1 = new NewsEntity(
+            'test_News_name',
+            $category,
+            'test_news_title',
+            'test_news_desc',
+            new \DateTime,
+            'test_news_link'
+        );
+        $this->em->persist($news1);
+
+        //test news
+        $news2 = new NewsEntity(
+            'test_News_name',
+            $category,
+            'test_news_title_2',
+            'test_news_desc',
+            new \DateTime,
+            'test_news_link'
+        );
+        $this->em->persist($news2);
+
+        $this->em->flush();
+
+        $total1 = $this->repo
+            ->findTotalByConditions([
+                'title' => 'test_news_title'
+            ]);
+
+        $this->assertEquals($total1, 1);
+    }
+
+    public function setupRepository()
+    {
+        $this->repo = $this->em
+            ->getRepository(NewsEntity::class);
     }
 }

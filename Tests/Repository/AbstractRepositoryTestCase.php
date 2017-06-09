@@ -4,6 +4,7 @@ namespace Gubarev\Bundle\FeedBundle\Tests\Repository;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Tools\SchemaTool;
+use Gubarev\Bundle\FeedBundle\Repository\Interfaces\RepositoryInterface;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractRepositoryTestCase extends TestCase
@@ -15,7 +16,7 @@ abstract class AbstractRepositoryTestCase extends TestCase
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $entityManager;
+    protected $em;
     /**
      * @var \Symfony\Component\DependencyInjection\Container
      */
@@ -28,6 +29,10 @@ abstract class AbstractRepositoryTestCase extends TestCase
      * @var SchemaTool
      */
     protected $tool;
+    /**
+     * @var RepositoryInterface
+     */
+    protected $repo;
 
     public function setUp()
     {
@@ -40,10 +45,12 @@ abstract class AbstractRepositoryTestCase extends TestCase
 
         // Store the container and the entity manager in test case properties
         $this->container = $this->kernel->getContainer();
-        $this->entityManager = $this->container->get('doctrine')->getEntityManager();
+        $this->em = $this->container->get('doctrine')->getEntityManager();
 
         // Build the schema for sqlite
         $this->generateSchema();
+
+        $this->setupRepository();
 
         parent::setUp();
     }
@@ -64,7 +71,7 @@ abstract class AbstractRepositoryTestCase extends TestCase
 
         if ( ! empty($this->metadata)) {
             // Create SchemaTool
-            $this->tool = new SchemaTool($this->entityManager);
+            $this->tool = new SchemaTool($this->em);
             $this->tool->dropSchema($this->metadata);
             $this->tool->createSchema($this->metadata);
         } else {
@@ -79,6 +86,8 @@ abstract class AbstractRepositoryTestCase extends TestCase
      */
     protected function getMetadata()
     {
-        return $this->entityManager->getMetadataFactory()->getAllMetadata();
+        return $this->em->getMetadataFactory()->getAllMetadata();
     }
+
+    abstract public function setupRepository();
 }

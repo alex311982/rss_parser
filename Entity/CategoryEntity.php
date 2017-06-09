@@ -37,15 +37,6 @@ class CategoryEntity extends AbstractEntity
     protected $slug;
 
     /**
-     *
-     * @var \DateTime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
-    protected $created;
-
-    /**
      * CategoryEntity constructor.
      * @param string $name
      * @internal param $this
@@ -112,26 +103,6 @@ class CategoryEntity extends AbstractEntity
     public function setSlug($slug)
     {
         $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getCreated()
-    {
-        return $this->created;
-    }
-
-    /**
-     * @param \DateTime $created
-     *
-     * @return $this
-     */
-    public function setCreated($created)
-    {
-        $this->created = $created;
 
         return $this;
     }
