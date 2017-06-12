@@ -18,4 +18,8 @@ interface FeedEntityManagerInterface
     public function truncateTables();
 
     public function flushEntities();
+
+    public function findTotalByConditions(string $class, array $criteria = []): int;
+
+    public function findAllByConditions(string $class, array $criteria, array $orderBy = null, $limit = null, $offset = null): array;
 }

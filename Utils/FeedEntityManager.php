@@ -134,4 +134,37 @@ class FeedEntityManager implements FeedEntityManagerInterface
             throw new FeederException(FeederException::ORM_ERROR_MSG);
         }
     }
+
+    /**
+     * @param string $class
+     * @param array $criteria
+     * @return int
+     * @throws FeederException
+     */
+    public function findTotalByConditions(string $class, array $criteria = []): int
+    {
+        try {
+            return $this->em->getRepository($class)->findTotalByConditions($criteria);
+        } catch (\Exception $e) {
+            throw new FeederException(FeederException::ORM_ERROR_MSG);
+        }
+    }
+
+    /**
+     * @param string $class
+     * @param array $criteria
+     * @param array|null $orderBy
+     * @param null $limit
+     * @param null $offset
+     * @return array
+     * @throws FeederException
+     */
+    public function findAllByConditions(string $class, array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    {
+        try {
+            return $this->em->getRepository($class)->findBy($criteria, $orderBy, $limit, $offset);
+        } catch (\Exception $e) {
+            throw new FeederException(FeederException::ORM_ERROR_MSG);
+        }
+    }
 }
