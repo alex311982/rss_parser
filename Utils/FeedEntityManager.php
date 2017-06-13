@@ -159,7 +159,7 @@ class FeedEntityManager implements FeedEntityManagerInterface
      * @return array
      * @throws FeederException
      */
-    public function findAllByConditions(string $class, array $criteria, array $orderBy = null, $limit = null, $offset = null): array
+    public function findAllByConditions(string $class, array $criteria = [], array $orderBy = null, $limit = null, $offset = null): array
     {
         try {
             return $this->em->getRepository($class)->findBy($criteria, $orderBy, $limit, $offset);
